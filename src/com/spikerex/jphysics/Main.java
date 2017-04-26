@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import com.spikerex.jphysics.graphics.Screen;
+import com.spikerex.jphysics.world.World;
 
 public class Main extends Canvas implements Runnable {
 	/**
@@ -29,7 +30,7 @@ public class Main extends Canvas implements Runnable {
 	private BufferedImage image = new BufferedImage(WIDTH*Scale, HEIGHT*Scale, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private JFrame frame;
-
+	private World world;
 	public static Main game;
 	public static void main(String[] args) {
 		game = new Main();
@@ -55,7 +56,7 @@ public class Main extends Canvas implements Runnable {
 		setMaximumSize(size);
 
 		screen = new Screen(WIDTH*Scale, HEIGHT*Scale);
-
+		world = new World(WIDTH*Scale,HEIGHT*Scale);
 	}
 
 	public synchronized void start() {
@@ -118,7 +119,7 @@ public class Main extends Canvas implements Runnable {
 
 	public void update() {
 		tick++;
-		
+		world.update(tick);
 	}
 	int color = 0;
 	public void render() {
@@ -130,7 +131,7 @@ public class Main extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		screen.clear();
 	
-		
+		world.render(screen);
 		for (int i = 0; i < (WIDTH*Scale) * (HEIGHT*Scale); i++) {
 			pixels[i] = screen.pixels[i];
 		}
